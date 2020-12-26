@@ -1,7 +1,9 @@
-# Awesome Project Build with TypeORM
+# V4 App
 
-Steps to run this project:
-
-1. Run `npm i` command
-2. Setup database settings inside `ormconfig.json` file
-3. Run `npm start` command
+:gear: **Technologies:**
+- Nodejs
+- Express
+- Typescript
+- Typeorm
+- Postgress
+- Docker
