@@ -1,7 +1,7 @@
-// Verify if link starts with 'http://' or 'https://' and is at least 12 characters long
+// Verify if link starts with 'http://' or 'https://' and if it contains at least one dot character
 function validateLink(link: string) {
-  const validLink = /^(?:http(s)?:\/\/)/
-  if (!validLink.test(link) || link.length < 12) return false;
+  const validLink = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)/
+  if (!validLink.test(link)) return false;
   return true;
 };
 
