@@ -5,7 +5,9 @@ import { validate } from 'class-validator';
 import Tool from '../models/Tool';
 import Tag from '../models/Tag';
 import tools_view from '../views/tools_view';
-import validateLink from '../services/toolsServices';
+import ToolsServices from '../services/ToolsServices';
+
+const toolsServices = new ToolsServices();
 
 export default class ToolController {
 
@@ -54,12 +56,14 @@ export default class ToolController {
     }
 
     // validate if link is a valid link
-    if (!validateLink(link)) return res.status(400).json({ message: 'Invalid link entry' });
+    if (!toolsServices.validateLink(link)){
+      return res.status(400).json({ message: 'Invalid link entry' });
+    }
 
     const toolsRepository = getRepository(Tool);
     const tagsRepository = getRepository(Tag);
 
-    // validate link and description characters lenght
+    // validate both link and description characters length
     const isValidLength = toolsRepository.create({
       link,
       description

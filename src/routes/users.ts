@@ -5,6 +5,6 @@ const usersRoute = Router();
 const userController = new UserController();
 
 usersRoute.get('/', userController.getUser);
-usersRoute.post('/', userController.save);
+usersRoute.post('/', userController.saveUser);
 
 export default usersRoute;
