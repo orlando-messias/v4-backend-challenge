@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
+import { validate } from 'class-validator';
 
 import Tool from '../models/Tool';
 import Tag from '../models/Tag';
@@ -52,10 +53,21 @@ export default class ToolController {
       return res.status(400).json({ message: 'Missing entries. Try again.' });
     }
 
+    // validate if link is a valid link
     if (!validateLink(link)) return res.status(400).json({ message: 'Invalid link entry' });
 
     const toolsRepository = getRepository(Tool);
     const tagsRepository = getRepository(Tag);
+
+    // validate link and description characters lenght
+    const isValidLength = toolsRepository.create({
+      link,
+      description
+    });
+    const errors = await validate(isValidLength);
+    if(errors.length !== 0) {
+      return res.status(400).json(errors.map(err => err.constraints));
+    }
 
     try {
       let tagsToInsert: Tag[] = [] as Tag[];
@@ -83,19 +95,6 @@ export default class ToolController {
     }
 
   };
-
-  // async searchTool(req: Request, res: Response) {
-  //   const { tag } = req.query;
-  //   const tagsRepository = getRepository(Tag);
-
-  //   const tools = await tagsRepository.find({
-  //     relations: ['tool'],
-  //     where: { name: tag },
-  //   });
-
-  //   const newTool = tools.map(item => item.tool);
-  //   return res.status(200).json(tools_view.renderMany(newTool));
-  // };
 
   async deleteTool(req: Request, res: Response) {
     const { id } = req.params;

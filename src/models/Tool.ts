@@ -6,6 +6,7 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn
 } from "typeorm";
+import { Length, MaxLength } from "class-validator";
 
 import Tag from "./Tag";
 
@@ -18,9 +19,11 @@ export default class Tool {
 	title: string;
 
 	@Column()
+	@MaxLength(50, { message: 'LINK must be shorther than or equal to 50 characters' })
 	link: string;
 
 	@Column()
+	@Length(10, 200, { message: 'DESCRIPTION must be between 10 and 200 characters long' })
 	description: string;
 
 	@CreateDateColumn({ name: 'created_At', select: false })
