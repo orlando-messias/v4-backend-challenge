@@ -56,7 +56,7 @@ export default class ToolController {
     }
 
     // validate if link is a valid link
-    if (!toolsServices.validateLink(link)){
+    if (!toolsServices.validateLink(link)) {
       return res.status(400).json({ message: 'Invalid link entry' });
     }
 
@@ -69,7 +69,7 @@ export default class ToolController {
       description
     });
     const errors = await validate(isValidLength);
-    if(errors.length !== 0) {
+    if (errors.length !== 0) {
       return res.status(400).json(errors.map(err => err.constraints));
     }
 

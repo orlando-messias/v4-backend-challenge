@@ -4,18 +4,31 @@ import { validate } from 'class-validator';
 
 import User from '../models/User';
 import UsersServices from '../services/UsersServices';
+import { authenticate } from '../services/authenticate';
 
 const usersServices = new UsersServices();
 
 export default class UserController {
 
-  async getUser(req: Request, res: Response) {
-    const usersRepository = getRepository(User);
+  async loginUser(req: Request, res: Response) {
+    const { email, password } = req.body;
 
-    const user = await usersRepository.find();
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Missing entries. Try again.' });
+    }
 
-    return res.status(200).json(user);
-  }
+    const user = await getRepository(User).findOne({
+      where: { email }
+    });
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: 'Incorrect username or password' });
+    }
+
+    const { id, name, created_at, updated_at, ...credentials } = user;
+    const token = authenticate(credentials);
+
+    return res.status(200).json({ id, name, email, token });
+  };
 
   async saveUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
