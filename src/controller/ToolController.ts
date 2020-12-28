@@ -7,10 +7,9 @@ import Tag from '../models/Tag';
 import tools_view from '../views/tools_view';
 import ToolsServices from '../services/ToolsServices';
 
-const toolsServices = new ToolsServices();
-
 export default class ToolController {
 
+  // list all tools or list them by a tag
   async getAll(req: Request, res: Response) {
     const toolsRepository = getRepository(Tool);
     const { tag } = req.query;
@@ -34,6 +33,7 @@ export default class ToolController {
     return res.status(200).json(tools_view.renderMany(tools));
   };
 
+  // find a tool by id
   async getToolById(req: Request, res: Response) {
     const { id } = req.params;
     const toolsRepository = getRepository(Tool);
@@ -48,8 +48,10 @@ export default class ToolController {
     return res.status(200).json(tools_view.render(tool));
   }
 
-  async save(req: Request, res: Response) {
+  // save a tool and its related tags
+  async saveTool(req: Request, res: Response) {
     const { title, link, description, tags } = req.body;
+    const toolsServices = new ToolsServices();
 
     if (!title || !link || !description || !tags) {
       return res.status(400).json({ message: 'Missing entries. Try again.' });
@@ -63,7 +65,7 @@ export default class ToolController {
     const toolsRepository = getRepository(Tool);
     const tagsRepository = getRepository(Tag);
 
-    // validate both link and description characters length
+    // validate characters length of link and description 
     const isValidLength = toolsRepository.create({
       link,
       description
@@ -100,6 +102,7 @@ export default class ToolController {
 
   };
 
+  // delete a tool by id
   async deleteTool(req: Request, res: Response) {
     const { id } = req.params;
     const toolsRepository = getRepository(Tool);

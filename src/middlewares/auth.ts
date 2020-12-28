@@ -8,6 +8,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   if (!bearer) return res.status(401).json({ message: 'Token is required' });
 
+  // discard string 'bearer ' from the header
   const token = bearer.split(" ")[1];
 
   try {
