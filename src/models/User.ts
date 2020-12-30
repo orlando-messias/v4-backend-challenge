@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsEmail } from "class-validator";
+import { IsEmail, MinLength } from "class-validator";
 
 @Entity('users')
 export default class User {
@@ -20,6 +20,7 @@ export default class User {
   email: string;
 
   @Column()
+  @MinLength(6, { message: 'Password must contains at least 6 characters' })
   password: string;
 
   @CreateDateColumn()
