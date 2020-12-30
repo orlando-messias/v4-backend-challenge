@@ -7,6 +7,7 @@ interface credentials {
   password: string,
 }
 
+// authenticate using email and password
 export const authenticate = (payload: credentials) => {
   const token = sign({ payload }, jwtConfig.secret, jwtConfig.headers);
   return token;

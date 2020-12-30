@@ -1,6 +1,7 @@
 import Tool from '../models/Tool';
 import tags_view from './tags_view';
 
+// renders a view to display a tool and its tags
 export default {
   render(tool: Tool) {
     return {

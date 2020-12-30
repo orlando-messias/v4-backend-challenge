@@ -5,6 +5,6 @@ export const connection = async () => {
   console.log(`Connected to db ${conn.options.database}`);
   
   process.on('SIGINT', () => {
-    conn.close().then(() => console.log('done'));
+    conn.close().then(() => console.log('bd v4-app done'));
   });
 };

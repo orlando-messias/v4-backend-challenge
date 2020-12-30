@@ -6,7 +6,8 @@ import { connection } from './config/db';
 import toolsRoute from './routes/tools';
 import usersRoute from './routes/users';
 
-export const app = express();
+const app = express();
+const PORT = 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,4 +19,13 @@ app.use('/users', usersRoute);
 
 app.use('/', (_req, res) => {
   res.send('This is v4 API');
+});
+
+const server = app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
+process.on('SIGINT', () => {
+  server.close();
+  console.log(' xx App is finished xx ');
 });

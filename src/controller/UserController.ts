@@ -6,10 +6,9 @@ import User from '../models/User';
 import UsersServices from '../services/UsersServices';
 import { authenticate } from '../services/authenticate';
 
-const usersServices = new UsersServices();
-
 export default class UserController {
 
+  // user login and authenticate
   async loginUser(req: Request, res: Response) {
     const { email, password } = req.body;
 
@@ -24,14 +23,17 @@ export default class UserController {
       return res.status(401).json({ message: 'Incorrect username or password' });
     }
 
+    // only email and password are important to authenticate
     const { id, name, created_at, updated_at, ...credentials } = user;
     const token = authenticate(credentials);
 
     return res.status(200).json({ id, name, email, token });
   };
 
+  // save a new user
   async saveUser(req: Request, res: Response) {
     const { name, email, password } = req.body;
+    const usersServices = new UsersServices();
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Missing entries. Try again.' });
