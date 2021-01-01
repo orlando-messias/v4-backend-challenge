@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getRepository } from 'typeorm';
 import { validate } from 'class-validator';
+import { Like } from 'typeorm';
 
 import Tool from '../models/Tool';
 import Tag from '../models/Tag';
@@ -19,7 +20,7 @@ export default class ToolController {
 
       const tools = await tagsRepository.find({
         relations: ['tool'],
-        where: { name: tag },
+        where: { name: Like(`%${tag}%`) },
       });
 
       const newTools = tools.map(item => item.tool);
