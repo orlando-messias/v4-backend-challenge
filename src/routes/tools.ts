@@ -7,7 +7,7 @@ const toolController = new ToolController();
 
 toolsRoute.get('/', toolController.getAll);
 toolsRoute.get('/:id', toolController.getToolById);
-toolsRoute.post('/', auth, toolController.saveTool);
-toolsRoute.delete('/:id', auth, toolController.deleteTool);
+toolsRoute.post('/', toolController.saveTool);
+toolsRoute.delete('/:id', toolController.deleteTool);
 
 export default toolsRoute;

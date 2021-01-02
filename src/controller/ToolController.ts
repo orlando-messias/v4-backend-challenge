@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getRepository } from 'typeorm';
+import { getRepository, ILike } from 'typeorm';
 import { validate } from 'class-validator';
 import { Like } from 'typeorm';
 
@@ -13,18 +13,27 @@ export default class ToolController {
   // list all tools or list them by a tag
   async getAll(req: Request, res: Response) {
     const toolsRepository = getRepository(Tool);
-    const { tag } = req.query;
+    const { tag, title } = req.query;
 
     if (tag) {
       const tagsRepository = getRepository(Tag);
 
       const tools = await tagsRepository.find({
         relations: ['tool'],
-        where: { name: Like(`%${tag}%`) },
+        where: { name: Like(`${tag}%`) },
       });
 
       const newTools = tools.map(item => item.tool);
       return res.status(200).json(tools_view.renderMany(newTools));
+    }
+
+    if (title) {
+      const tools = await toolsRepository.find({
+        relations: ['tags'],
+        where: { title: ILike(`${title}%`) },
+      });
+
+      return res.status(200).json(tools_view.renderMany(tools));
     }
 
     const tools = await toolsRepository.find({
@@ -47,6 +56,23 @@ export default class ToolController {
     }
 
     return res.status(200).json(tools_view.render(tool));
+  }
+
+  async getToolByTitle(req: Request, res: Response) {
+    const { title } = req.query;
+    const toolsRepository = getRepository(Tool);
+
+    const tools = await toolsRepository.find({
+      relations: ['tool'],
+      where: { name: Like(`%${title}%`) },
+    });
+
+    // if (!tools) {
+    //   res.status(404).send({ message: "Tool not found" });
+    //   return;
+    // }
+
+    return res.status(200).json(tools_view.renderMany(tools));
   }
 
   // save a tool and its related tags
