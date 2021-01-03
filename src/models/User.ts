@@ -20,7 +20,6 @@ export default class User {
   email: string;
 
   @Column()
-  @MinLength(6, { message: 'Password must contains at least 6 characters' })
   password: string;
 
   @CreateDateColumn()

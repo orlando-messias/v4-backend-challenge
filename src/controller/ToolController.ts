@@ -58,23 +58,6 @@ export default class ToolController {
     return res.status(200).json(tools_view.render(tool));
   }
 
-  async getToolByTitle(req: Request, res: Response) {
-    const { title } = req.query;
-    const toolsRepository = getRepository(Tool);
-
-    const tools = await toolsRepository.find({
-      relations: ['tool'],
-      where: { name: Like(`%${title}%`) },
-    });
-
-    // if (!tools) {
-    //   res.status(404).send({ message: "Tool not found" });
-    //   return;
-    // }
-
-    return res.status(200).json(tools_view.renderMany(tools));
-  }
-
   // save a tool and its related tags
   async saveTool(req: Request, res: Response) {
     const { title, link, description, tags } = req.body;

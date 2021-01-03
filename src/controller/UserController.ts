@@ -52,6 +52,12 @@ export default class UserController {
     }
 
     const usersRepository = getRepository(User);
+
+    const user = await usersRepository.findOne({
+      where: { email }
+    });
+    if (user) return res.status(400).json({ message: 'Email already exists' });
+
     const data = { name, email, password };
 
     const isValidEmail = usersRepository.create({
