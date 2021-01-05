@@ -2,7 +2,7 @@
 
 ### :computer: About
 
-VUTTR API uses NodeJS, Express, Docker and BD Postgres to allow users to manage some tools with their respective ***names, links, descriptions*** and ***tags*** by searching, adding and removing them.
+VUTTR API uses *NodeJS, Express, Docker* and *DB PostgreSQL* to allow users to manage some tools with their respective ***names, links, descriptions*** and ***tags*** by searching, adding and removing them.
 
 Everyone can search for tools in the repository but in case of adding new ones or delete them, user login is required. **PS:** in case of your first access, you need to register first and then login to add or delete any tool.
 
@@ -25,11 +25,11 @@ $ npm run dev
 ```
 
 ### :vertical_traffic_light: Available Routes
-tools
+/tools
 
 ![](/images/routes01.png)
 
-users
+/users
 
 ![](/images/routes02.png)
 
