@@ -10,11 +10,12 @@ import ToolsServices from '../services/ToolsServices';
 
 export default class ToolController {
 
-  // list all tools or list them by a tag
+  // list all tools by title or tag name
   async getAll(req: Request, res: Response) {
     const toolsRepository = getRepository(Tool);
     const { tag, title } = req.query;
 
+    // find tools by tag if a query param 'tag' exists  
     if (tag) {
       const tagsRepository = getRepository(Tag);
 
@@ -27,6 +28,7 @@ export default class ToolController {
       return res.status(200).json(tools_view.renderMany(newTools));
     }
 
+    // find tools by title if a query param 'title' exists
     if (title) {
       const tools = await toolsRepository.find({
         relations: ['tags'],
